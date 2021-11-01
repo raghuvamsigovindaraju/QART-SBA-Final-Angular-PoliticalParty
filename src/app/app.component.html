@@ -1,0 +1,71 @@
+<!-- Responsive navbar-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container py-2">
+        <a href="#">
+            <img class="app-logo" src="../assets/logo.png" alt="" width="70" height="70">
+        </a>
+    </div>
+</nav>
+<!-- Page content-->
+<div class="container py-4" *ngIf="!isLeadersLoading; else preloader">
+    <div class="d-flex align-items-end">
+        <div class="form-group col-lg-4">
+            <label for="packages" class="form-label">Leaders</label>
+            <select class="form-select" id="packages" [(ngModel)]="selectedLeader" placholder="Select Leader">
+                <option selected [ngValue]="null">Select Leader</option>
+                <option *ngFor="let leader of leadersList" [ngValue]="leader">{{leader.leaderName}}</option>
+            </select>
+        </div>
+        <button type="button" class="btn btn-primary mx-5 mt-5" (click)="getProductData()"
+            [disabled]="!selectedLeader">Get Details</button>
+    </div>
+    <div class="my-5" *ngIf="selectedLeader">
+        <h3>Leader Details</h3>
+        <div class="container">
+            <div class="row mb-2">
+                <div class="col col-label">Party Id:</div>
+                <div class="col-10">{{selectedLeader.politicalPartyId}}</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col col-label">Leader Name:</div>
+                <div class="col-10">{{selectedLeader.leaderName}}</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col col-label">Leader State:</div>
+                <div class="col-10">{{selectedLeader.leaderState}}</div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="developmentsList.length && !isDevelomentsLoading; else preloader">
+        <h3>Developments</h3>
+        <table class="table">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col">Title</th>
+                    <th scope="col">Activity</th>
+                    <th scope="col">Budget</th>
+                    <th scope="col">State</th>
+                    <th scope="col">Date(mm/yyyy)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let development of developmentsList">
+                    <th>{{development.title}}</th>
+                    <td>{{development.activity}}</td>
+                    <td>{{development.budget}}</td>
+                    <td>{{development.state}}</td>
+                    <td>{{development.activityMonth}}/{{development.activityYear}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<ng-template #preloader>
+    <div *ngIf="isLeadersLoading || isDevelomentsLoading" class="d-flex justify-content-center align-items-center h-100">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</ng-template>
